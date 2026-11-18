@@ -82,9 +82,13 @@ test('Q7: 著者・メモを入力して書籍を追加できる', async ({ page
   await bookModal.selectAuthor('山田');
   await bookModal.fillNote('テスト用のメモ');
   await bookModal.save();
-  // Assert
+  // Assert（追加された書籍は ID=7。件数だけでなく、入力した値が反映されているかまで見る）
   const count = await bookPage.getBookCount();
   expect(count).toBe(7);
+  const author = await bookPage.getBookAuthor(7);
+  const note = await bookPage.getBookNote(7);
+  expect(author).toContain('山田');
+  expect(note).toContain('テスト用のメモ');
 });
 
 // Q8: 評価・ページ数を設定して書籍を追加できる
@@ -96,9 +100,13 @@ test('Q8: 評価・ページ数を設定して書籍を追加できる', async (
   await bookModal.selectRating(4);
   await bookModal.fillPages('350');
   await bookModal.save();
-  // Assert
+  // Assert（評価は星マークで表示される）
   const count = await bookPage.getBookCount();
   expect(count).toBe(7);
+  const rating = await bookPage.getBookRating(7);
+  const pages = await bookPage.getBookPages(7);
+  expect(rating).toBe('★★★★☆');
+  expect(pages).toContain('350');
 });
 
 // Q9: ウィッシュリスト保存するとステータスが「未読」になる
@@ -162,9 +170,15 @@ test('Q13: 著者・評価・ページ数を全て設定して追加できる', 
   await bookModal.selectRating(5);
   await bookModal.fillPages('400');
   await bookModal.save();
-  // Assert
+  // Assert（3つとも入力した値になっているかを見る）
   const count = await bookPage.getBookCount();
   expect(count).toBe(7);
+  const author = await bookPage.getBookAuthor(7);
+  const rating = await bookPage.getBookRating(7);
+  const pages = await bookPage.getBookPages(7);
+  expect(author).toContain('高橋');
+  expect(rating).toBe('★★★★★');
+  expect(pages).toContain('400');
 });
 
 // Q14: 書籍名を空のまま保存するとエラーが表示される
