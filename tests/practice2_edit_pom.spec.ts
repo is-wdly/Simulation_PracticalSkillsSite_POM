@@ -26,7 +26,7 @@ test.beforeEach(async ({ page }) => {
 test('Q1: 著者フィルターで「山田」を選択すると書籍が絞り込まれる', async ({ page }) => {
   // TODO: BookPage.filterByAuthor() を実装してから使用]
   // Act: filterByAuthor('山田') → getBookCount()
-  const selectedAuthor = await bookPage.filterByAuthor('山田');
+  await bookPage.filterByAuthor('山田');
   const bookCount = await bookPage.getBookCount();
 
   // Assert: 2件であることを検証
@@ -58,7 +58,7 @@ test('Q4: 書籍ID=2の評価が「5」である', async ({ page }) => {
   // Act: getBookRating(2)
   const bookId_2 = await bookPage.getBookRating(2);
 
-  // Assert: '5' を含むことを検証
+  // Assert: 評価は数字ではなく星マークで表示される。'★★★★★' であることを検証
   expect(bookId_2).toBe('★★★★★');
 });
 
@@ -76,7 +76,7 @@ test('Q5: 書籍ID=1のページ数が「320」である', async ({ page }) => {
 test('Q6: 著者「高橋」で絞り込むと2件になる', async ({ page }) => {
   // TODO: BookPage.filterByAuthor() を実装してから使用
   // Act:高橋に絞る
-  const selectedAuthor = await bookPage.filterByAuthor('高橋');
+  await bookPage.filterByAuthor('高橋');
   const rowCount = await bookPage.getBookCount();
 
   // Assert: 2件であることを検証
@@ -96,9 +96,13 @@ test('Q7: 著者・メモを入力して書籍を追加できる', async ({ page
   await bookModal.fillNote('新しい書籍のメモ');
   await bookModal.save();
 
-  // Assert: 書籍数が7件になることを検証
+  // Assert: 書籍数が7件になり、追加された書籍の著者とメモが一覧に表示されることを検証
   const bookCount = await bookPage.getBookCount();
   expect(bookCount).toBe(7);
+  const author = await bookPage.getBookAuthor(7);
+  await expect(author).toContain('山田');
+  const note = await bookPage.getBookNote(7);
+  await expect(note).toContain('新しい書籍のメモ');
 });
 
 // Q8: 評価・ページ数を設定して書籍を追加できる
@@ -109,13 +113,17 @@ test('Q8: 評価・ページ数を設定して書籍を追加できる', async (
 
   // Act: タイトル、評価、ページ数を入力して保存
   await bookModal.fillTitle('新しい書籍2');
-  await bookModal.selectRating(4);
+  await bookModal.selectRating(5);
   await bookModal.fillPages('250');
   await bookModal.save();
 
-  // Assert: 書籍数が7件になることを検証
+  // Assert: 書籍数が7件になり、追加された書籍の評価とページ数が一覧に表示されることを検証
   const bookCount = await bookPage.getBookCount();
   expect(bookCount).toBe(7);
+  const rating = await bookPage.getBookRating(7);
+  expect(rating).toBe('★★★★★')
+  const pages = await bookPage.getBookPages(7);
+  expect(pages).toContain('250');
 });
 
 // Q9: ウィッシュリスト保存するとステータスが「未読」になる
@@ -187,9 +195,15 @@ test('Q13: 著者・評価・ページ数を全て設定して追加できる', 
   await bookModal.fillPages('400');
   await bookModal.save();
 
-  // Assert: 書籍数が7件になることを検証
+  // Assert: 書籍数が7件になり、追加された書籍の著者・評価・ページ数が一覧に表示されることを検証
   const bookCount = await bookPage.getBookCount();
   expect(bookCount).toBe(7);
+  const author = await bookPage.getBookAuthor(7);
+  expect(author).toContain('中村');
+  const rating = await bookPage.getBookRating(7);
+  expect(rating).toBe('★★★★★');
+  const pages = await bookPage.getBookPages(7);
+  expect(pages).toContain('400');
 });
 
 // Q14: 書籍名を空のまま保存するとエラーが表示される（提供済みメソッドで動作確認用）
