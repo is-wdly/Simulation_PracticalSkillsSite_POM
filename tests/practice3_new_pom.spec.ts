@@ -85,7 +85,7 @@ test('Q3: ダークモードトグルをONにして保存できる', async ({ pa
   const displayPage = new DisplayPage(page);
   await displayPage.navigate();
 
-  await displayPage.darkmode();
+  await displayPage.darkmode(true);
   await displayPage.save();
   // Assert: トースト "表示設定を保存しました" が表示される
   await expect(page.getByText('表示設定を保存しました', {exact: true})).toBeVisible();
@@ -98,7 +98,7 @@ test('Q4: リセットするとトグルが初期状態に戻る', async ({ page
   const displayPage = new DisplayPage(page);
   await displayPage.navigate();
 
-  await displayPage.darkmode();
+  await displayPage.darkmode(true);
   await displayPage.save();
 
   // Act: reset()
@@ -119,7 +119,7 @@ test('Q5: 保存した設定がページ遷移後も保持される', async ({ p
   const displayPage = new DisplayPage(page);
   await displayPage.navigate();
 
-  await displayPage.darkmode();
+  await displayPage.darkmode(true);
   await displayPage.save();
 
   // Act: 別ページに遷移 → 再度 navigate()
@@ -137,7 +137,7 @@ test('Q6: アニメーショントグルをONにして保存できる', async ({
   const displayPage = new DisplayPage(page);
   await displayPage.navigate();
 
-  await displayPage.animation();
+  await displayPage.animation(true);
   await displayPage.save();
 
   // Assert: トースト "表示設定を保存しました" が表示される
@@ -151,8 +151,8 @@ test('Q7: 全トグルをONにしてリセットすると初期値に戻る', as
   const displayPage = new DisplayPage(page);
   await displayPage.navigate();
 
-  await displayPage.darkmode();
-  await displayPage.animation();
+  await displayPage.darkmode(true);
+  await displayPage.animation(true);
   await displayPage.save();
 
   // Act: reset()
@@ -173,7 +173,7 @@ test('Q8: コンパクト表示をOFFにして保存できる', async ({ page })
   const displayPage = new DisplayPage(page);
   await displayPage.navigate();
 
-  await displayPage.compactOff();
+  await displayPage.compact(false);
   await displayPage.save();
 
   // Assert: トーストが表示され、compact が OFF であることを検証

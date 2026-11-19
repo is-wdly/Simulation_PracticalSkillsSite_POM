@@ -100,9 +100,9 @@ test('Q7: 著者・メモを入力して書籍を追加できる', async ({ page
   const bookCount = await bookPage.getBookCount();
   expect(bookCount).toBe(7);
   const author = await bookPage.getBookAuthor(7);
-  await expect(author).toContain('山田');
+  expect(author).toContain('山田');
   const note = await bookPage.getBookNote(7);
-  await expect(note).toContain('新しい書籍のメモ');
+  expect(note).toContain('新しい書籍のメモ');
 });
 
 // Q8: 評価・ページ数を設定して書籍を追加できる
@@ -147,8 +147,8 @@ test('Q9: ウィッシュリスト保存するとステータスが「未読」�
 test('Q10: ジャンル「tech」＋著者「山田」で絞り込むと1件になる', async ({ page }) => {
   // TODO: BookPage.filterByAuthor() を実装してから使用
   // Act: filterByGenre('tech') → filterByAuthor('山田') → getBookCount()
-  const selectedGenre = await bookPage.filterByGenre('tech');
-  const selectedAuthor = await bookPage.filterByAuthor('山田');
+  await bookPage.filterByGenre('tech');
+  await bookPage.filterByAuthor('山田');
   const bookCount = await bookPage.getBookCount();
 
   // Assert: 1件であることを検証
@@ -159,7 +159,7 @@ test('Q10: ジャンル「tech」＋著者「山田」で絞り込むと1件に�
 test('Q11: 著者「unknown」で絞り込むと著者未設定の書籍が表示される', async ({ page }) => {
   // TODO: BookPage.filterByAuthor() を実装してから使用
   // Act: filterByAuthor('unknown') → getBookCount()
-  const selectedAuthor = await bookPage.filterByAuthor('unknown');
+  await bookPage.filterByAuthor('unknown');
   const bookCount = await bookPage.getBookCount();
 
   // Assert: 1件であることを検証（ワンピース100巻のみ）

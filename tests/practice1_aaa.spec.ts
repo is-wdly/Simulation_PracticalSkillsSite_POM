@@ -106,7 +106,7 @@ test('Q7: 全ジャンルで「読了」数が2件になる', async ({ page }) =
   //Arrange: (beforeEach でセットアップ済み)
 
   //Act: 全てのジャンルで集計カードの「読了」数を取得
-  await statsPage.filterByGenre('すべて');
+  await statsPage.filterByGenre('all');
   const finishedCount = (await statsPage.getStatValues()).finished;
 
   //Assert: 集計カードの「読了」数が2件であることを検証
@@ -119,7 +119,7 @@ test('Q8: 全ジャンルで「読書中」数が2件になる', async ({ page }
   //Arrange: (beforeEach でセットアップ済み)
 
   //Act: 全てのジャンルで集計カードの「読書中」数を取得
-  await statsPage.filterByGenre('すべて');
+  await statsPage.filterByGenre('all');
   const readingCount = (await statsPage.getStatValues()).reading;
 
   //Assert: 集計カードの「読書中」数が2件であることを検証
@@ -130,7 +130,7 @@ test('Q8: 全ジャンルで「読書中」数が2件になる', async ({ page }
 test('Q9: 全ジャンルで「未読」数が2件になる', async ({ page }) => {
   // TODO: AAA パターンでテストを書いてください
   //Act
-  await statsPage.filterByGenre('すべて');
+  await statsPage.filterByGenre('all');
   const unReadingCount = (await statsPage.getStatValues()).unread;
 
   //Assert

@@ -28,24 +28,24 @@ export class DisplayPage {
         await this.navDisplay.click();
     }
 
-    async darkmode() {
-        await this.displayDarkmode.setChecked(true);
+    async darkmode(on: boolean) {
+        await this.displayDarkmode.setChecked(on);
     }
 
-    async compactOff() {
-        await this.displayCompact.setChecked(false);
+    async compact(on: boolean) {
+        await this.displayCompact.setChecked(on);
     }
 
-    async cover() {
-        await this.displayCover.setChecked(true);
+    async cover(on: boolean) {
+        await this.displayCover.setChecked(on);
     }
     
-    async rating(){
-        await this.displayRating.setChecked(true);
+    async rating(on: boolean){
+        await this.displayRating.setChecked(on);
     }
 
-    async animation(){
-        await this.displayAnimation.setChecked(true);
+    async animation(on: boolean){
+        await this.displayAnimation.setChecked(on);
     }
 
     async save(){
